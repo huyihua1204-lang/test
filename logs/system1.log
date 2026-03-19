@@ -1,0 +1,15 @@
+2024-01-15 08:00:01 [INFO] PLC-01 System startup complete
+2024-01-15 08:05:23 [INFO] PLC-01 Temperature sensor reading: value=72.4
+2024-01-15 08:10:45 [WARNING] PLC-02 Pressure slightly above threshold: value=85.2
+2024-01-15 08:15:10 [INFO] SENSOR-03 Humidity normal: value=45.0
+2024-01-15 08:20:33 [ERROR] PLC-01 Temperature sensor fault: value=102.3
+2024-01-15 08:21:00 [ERROR] PLC-01 Overheat detected, shutting down heater unit
+2024-01-15 08:25:47 [INFO] PLC-02 Pressure normalized: value=78.1
+2024-01-15 08:30:12 [WARNING] SENSOR-03 Low battery on humidity sensor
+2024-01-15 08:35:55 [INFO] PLC-01 Temperature back to normal: value=74.6
+2024-01-15 08:40:00 [CRITICAL] MOTOR-01 Motor stall detected, emergency stop triggered
+2024-01-15 08:41:15 [ERROR] MOTOR-01 Motor restart failed
+2024-01-15 08:45:30 [INFO] PLC-02 Manual override activated by operator
+2024-01-15 08:50:00 [INFO] MOTOR-01 Motor restarted successfully
+2024-01-15 08:55:22 [INFO] SENSOR-03 Battery replaced, sensor online
+2024-01-15 09:00:00 [INFO] PLC-01 Scheduled maintenance check passed

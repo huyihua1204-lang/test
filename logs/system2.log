@@ -1,0 +1,16 @@
+2024-01-16 06:00:05 [INFO] CONVEYOR-01 Belt started, speed=1.2m/s
+2024-01-16 06:10:20 [INFO] CONVEYOR-02 Belt started, speed=1.2m/s
+2024-01-16 06:15:44 [WARNING] CONVEYOR-01 Belt tension low: value=0.78
+2024-01-16 06:20:11 [INFO] PLC-03 Production line running normally
+2024-01-16 06:30:00 [ERROR] CONVEYOR-01 Belt jam detected, line halted
+2024-01-16 06:31:05 [ERROR] PLC-03 Production line emergency stop
+2024-01-16 06:35:18 [INFO] CONVEYOR-01 Belt jam cleared by operator
+2024-01-16 06:36:00 [INFO] CONVEYOR-01 Belt restarted, speed=1.2m/s
+2024-01-16 06:40:30 [INFO] PLC-03 Production line resumed
+2024-01-16 07:00:00 [INFO] SENSOR-05 Quality check passed: batch=B-20240116-001
+2024-01-16 07:15:22 [WARNING] SENSOR-05 Product dimension out of tolerance: batch=B-20240116-002
+2024-01-16 07:20:00 [CRITICAL] PLC-03 Multiple sensor failures detected
+2024-01-16 07:21:10 [ERROR] SENSOR-04 Vision sensor offline
+2024-01-16 07:22:05 [ERROR] SENSOR-05 Calibration lost, readings unreliable
+2024-01-16 07:30:00 [INFO] PLC-03 Sensors recalibrated and back online
+2024-01-16 07:35:00 [INFO] CONVEYOR-02 End of shift, belt stopped
