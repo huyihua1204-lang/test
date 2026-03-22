@@ -15,7 +15,7 @@ load_dotenv()
 
 DB_PATH       = os.getenv("CHROMA_DB_PATH", "./chroma_db")
 COLLECTION    = "knowledge_base"
-EMBED_MODEL   = "paraphrase-multilingual-MiniLM-L12-v2"
+EMBED_MODEL   = os.getenv("EMBED_MODEL_PATH", "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
 CHUNK_SIZE    = 400
 CHUNK_OVERLAP = 60
 

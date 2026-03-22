@@ -5,6 +5,7 @@
 
 import sys
 import os
+os.environ["HF_ENDPOINT"] = "https://hf-mirror.com"
 import re
 import io
 import json
@@ -343,6 +344,12 @@ def render_trend_chart(stats: dict):
 st.set_page_config(page_title="工业日志分析器", page_icon="🏭", layout="wide")
 st.title("🏭 工业日志分析器（RAG 增强版 v3.0）")
 
+with st.expander("🚀 零基础快速上手指南", expanded=True):
+    col1, col2, col3 = st.columns(3)
+    col1.markdown("### 1. 喂入知识\n在「知识库管理」上传 PDF 或设备手册，让 AI 变专家。")
+    col2.markdown("### 2. 输入日志\n粘贴原始日志或上传文件，支持 JSON、Syslog 等多种格式。")
+    col3.markdown("### 3. 获取方案\n点击红色按钮，AI 将结合手册给出中文维修建议。")
+
 if not api_key:
     st.error("未检测到 OPENAI_API_KEY，请在 .env 文件中配置后重启。")
     st.stop()
@@ -406,8 +413,20 @@ with tab_log:
                 source_names.append(f.name)
 
     with input_tab2:
+        if "demo_text" not in st.session_state:
+            st.session_state.demo_text = ""
+
+        if st.button("📝 填入演示案例"):
+            st.session_state.demo_text = """2024-03-20 08:15:23 [ERROR] PLC-01 Temperature sensor fault: value=105.8°C exceeds threshold
+2024-03-20 08:16:45 [CRITICAL] MOTOR-02 Motor overload detected, current=45.2A
+2024-03-20 08:18:12 [ERROR] VALVE-03 Valve response timeout after 5000ms
+2024-03-20 08:20:33 [CRITICAL] PLC-01 Emergency shutdown triggered by safety system
+2024-03-20 08:22:10 [ERROR] SENSOR-04 Communication lost with remote sensor"""
+            st.rerun()
+
         pasted_text = st.text_area(
             "将日志内容粘贴到此处",
+            value=st.session_state.demo_text,
             height=200,
             placeholder=(
                 "2024-01-15 08:20:33 [ERROR] PLC-01 Temperature sensor fault: value=102.3\n"
@@ -479,9 +498,15 @@ with tab_log:
         else:
             if st.button("🤖 一键获取 DeepSeek 中文建议", type="primary"):
                 for i, err in enumerate(errors_to_show):
-                    with st.spinner(f"正在分析第 {i+1}/{len(errors_to_show)} 条..."):
+                    with st.status(
+                        f"正在分析第 {i+1}/{len(errors_to_show)} 条：{err['device']}...",
+                        expanded=True,
+                    ) as s:
+                        s.write("🔍 正在检索知识库...")
                         advice, chunks = call_deepseek_api(err, use_rag=use_rag)
-                    err["advice"] = advice  # 存入 err 供导出使用
+                        s.write("🤖 正在咨询 DeepSeek...")
+                        err["advice"] = advice
+                        s.update(label=f"✅ 已完成：{err['device']}", state="complete", expanded=False)
 
                     color = "🔴" if err["level"] == "CRITICAL" else "🟠"
                     with st.container(border=True):
@@ -505,11 +530,14 @@ with tab_log:
                 # ── 导出报告 ──
                 st.divider()
                 report_text = build_export_report(stats, source_hint=", ".join(source_names))
-                st.download_button(
-                    label="📥 下载分析报告（TXT）",
+                col_dl, _ = st.columns([2, 5])
+                col_dl.download_button(
+                    label="📥 下载完整分析报告（含 AI 建议）",
                     data=report_text.encode("utf-8"),
                     file_name=f"分析报告_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt",
                     mime="text/plain",
+                    type="primary",
+                    use_container_width=True,
                 )
 
             else:
